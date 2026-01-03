@@ -64,4 +64,18 @@ public class Departure {
     public void setMinTransferTime(int minTransferTime) {
         this.minTransferTime = minTransferTime;
     }
+
+    public Departure() {
+    }
+
+    public Departure(String type, String from, String to, String departureTime, int duration, int price, int minTransferTime) {
+        super();
+        this.type = type;
+        this.from = from;
+        this.to = to;
+        this.departureTime = departureTime;
+        this.duration = duration;
+        this.price = price;
+        this.minTransferTime = minTransferTime;
+    }
 }

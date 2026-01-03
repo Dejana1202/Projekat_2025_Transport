@@ -35,6 +35,12 @@ public class TransportData
 
     public TransportData()
     {
+    }
 
+    public TransportData(String[][] countryMap, List<Station> stations, List<Departure> departures) {
+        super();
+        this.countryMap = countryMap;
+        this.stations = stations;
+        this.departures = departures;
     }
 }

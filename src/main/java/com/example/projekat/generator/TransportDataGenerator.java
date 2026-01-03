@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class TransportDataGenerator {
-    //private static final int SIZE = 10;
+    // private static final int SIZE = 10;
+    // mozda n i m izvuci kao konstante takodje....
+    // sta znaci  "matricu gradova n × m, čije dimenzije se unose pri pokretanju aplikacije" - da li preko GUI-ja?
     int n;
     int m;
     private static final int DEPARTURES_PER_STATION = 5;
@@ -26,6 +28,22 @@ public class TransportDataGenerator {
         TransportData data = generateData();
         saveToJson(data, "transport_data.json");
         System.out.println("Generisano.");
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public int getM() {
+        return m;
+    }
+
+    public void setM(int m) {
+        this.m = m;
     }
 
     private TransportData generateData() {

@@ -26,7 +26,7 @@ public class Main extends Application {
         stage.show();
     }
     public static void main(String[] args) {
-        TransportDataGenerator generator = new TransportDataGenerator(3,5);
+       // TransportDataGenerator generator = new TransportDataGenerator(2,2);
 
         launch();
     }
