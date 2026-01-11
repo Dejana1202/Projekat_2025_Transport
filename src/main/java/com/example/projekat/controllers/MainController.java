@@ -30,6 +30,8 @@ public class MainController {
             int m = Integer.parseInt(mField.getText());
             int n = Integer.parseInt(nField.getText());
 
+            CountryController.setM(m);
+            CountryController.setN(n);
             new TransportDataGenerator(m, n);
 
             messageLabel.setText("JSON fajl je generisan!");

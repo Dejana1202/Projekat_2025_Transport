@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.projekat.controllers.CountryController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.CountryController">
+   <children>
+      <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <HBox prefHeight="40.0" spacing="6.0">
+               <children>
+                  <Label prefHeight="28.0" prefWidth="37.0" text="Od : " textAlignment="CENTER" />
+                  <ComboBox fx:id="fromCombo" prefHeight="25.0" prefWidth="86.0" />
+                  <Label prefHeight="26.0" prefWidth="43.0" text="Do : " />
+                  <ComboBox fx:id="toCombo" prefHeight="25.0" prefWidth="86.0" />
+                  <Label prefHeight="26.0" prefWidth="66.0" text="Kriterijum :" />
+                  <ComboBox fx:id="criteriaCombo" prefHeight="25.0" prefWidth="121.0" />
+               </children>
+            </HBox>
+            <StackPane fx:id="graphContainer" VBox.vgrow="ALWAYS" />
+            <HBox prefHeight="40.0" spacing="10.0">
+                  <ProgressIndicator fx:id="progressIndicator" prefHeight="24.0" prefWidth="24.0" progress="0.0" />
+                  <Label fx:id="statusLabel" />
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
