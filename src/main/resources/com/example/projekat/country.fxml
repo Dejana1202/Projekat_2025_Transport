@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -10,17 +11,27 @@
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.CountryController">
    <children>
-      <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+               <children>
+                  <Label text="Ukupna zarada: " />
+                  <Label fx:id="totalAmountLabel" prefWidth="120.0" style="-fx-border-color: lightgray; -fx-padding: 4;" text="0.00" />
+                  <Label text="Ukupan broj prodatih karata: " />
+                  <Label fx:id="totalTicketsLabel" prefWidth="60.0" style="-fx-border-color: lightgray; -fx-padding: 4;" text="0" />
+
+                  <Button fx:id="searchButton" onAction="#onSearchPressed" text="Pretraži" />
+                  <Button fx:id="showRouteTableButton" onAction="#onBestRoutePressed" text="Najbolja ruta" />
+               </children>
+            </HBox>
             <HBox prefHeight="40.0" spacing="6.0">
                <children>
                   <Label prefHeight="28.0" prefWidth="37.0" text="Od : " textAlignment="CENTER" />
-                  <ComboBox fx:id="fromCombo" prefHeight="25.0" prefWidth="86.0" />
+                  <ComboBox fx:id="fromCombo" onAction="#onFromSelected" prefHeight="26.0" prefWidth="103.0" promptText="Polazište" />
                   <Label prefHeight="26.0" prefWidth="43.0" text="Do : " />
-                  <ComboBox fx:id="toCombo" prefHeight="25.0" prefWidth="86.0" />
+                  <ComboBox fx:id="toCombo" onAction="#onToSelected" prefHeight="26.0" prefWidth="107.0" promptText="Odredište" />
                   <Label prefHeight="26.0" prefWidth="66.0" text="Kriterijum :" />
-                  <ComboBox fx:id="criteriaCombo" prefHeight="25.0" prefWidth="121.0" />
+                  <ComboBox fx:id="criteriaCombo" onAction="#onCriteriaSelected" prefHeight="25.0" prefWidth="121.0" promptText="Kriterijum" />
                </children>
             </HBox>
             <StackPane fx:id="graphContainer" VBox.vgrow="ALWAYS" />

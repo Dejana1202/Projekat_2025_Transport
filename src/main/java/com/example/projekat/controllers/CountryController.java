@@ -7,11 +7,9 @@ import com.example.projekat.models.TransportData;
 import com.example.projekat.utils.TransportDataUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.graphstream.graph.Edge;
@@ -53,11 +51,61 @@ public class CountryController {
     private TransportData data;
     private Map<String, Station> stationMap = new HashMap<>();
     @FXML
+    private Label totalAmountLabel;
+    @FXML
+    private Label totalTicketsLabel;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button showRouteTableButton;
+    private String selectedFrom = null;
+    private String selectedTo = null;
+    private Criteria selectedCriteria = null;
+    @FXML
     public void initialize(){
         progressIndicator.setVisible(false);
         criteriaCombo.getItems().addAll("Najkraće vrijeme putovanja", "Najniža cijena", "Najmanji broj presjedanja");
         loadGraph(FILENAME);
     }
+    @FXML
+    private void onFromSelected(){
+        selectedFrom = fromCombo.getValue();
+        System.out.println("Odrediste : " + selectedFrom);
+    }
+    @FXML
+    private void onToSelected(){
+        selectedTo = toCombo.getValue();
+        System.out.println("Polaziste : " + selectedTo);
+
+    }
+    @FXML
+    private void onCriteriaSelected(){
+    int index = criteriaCombo.getSelectionModel().getSelectedIndex();
+    if (index == 0){
+        selectedCriteria = Criteria.FASTEST;
+    }
+    else if (index == 1){
+        selectedCriteria = Criteria.CHEAPEST;
+    }
+    else if (index == 2){
+        selectedCriteria = Criteria.LEAST_TRANSFERS;
+    }
+        System.out.println("Izabrani kriterijum " + selectedCriteria.name());
+    }
+    @FXML
+    void onBestRoutePressed(ActionEvent event) {
+
+    }
+    @FXML
+    void onSearchPressed(ActionEvent event) {
+        if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
+            System.out.println("Pretrazujemo Dijkstra...");
+        }
+        else {
+            System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
+        }
+    }
+
     private void loadGraph(String fileName){
         Task<Void> task = new Task<>() {
             @Override
