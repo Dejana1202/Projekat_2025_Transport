@@ -1,9 +1,7 @@
 package com.example.projekat.controllers;
 
-import com.example.projekat.models.Criteria;
-import com.example.projekat.models.Departure;
-import com.example.projekat.models.Station;
-import com.example.projekat.models.TransportData;
+import com.example.projekat.algorithms.Dijkstra;
+import com.example.projekat.models.*;
 import com.example.projekat.utils.TransportDataUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -25,7 +23,9 @@ import java.util.List;
 import java.util.*;
 
 public class CountryController {
-    public static final String FILENAME = "transport_data.json";
+    //public static final String FILENAME = "transport_data.json";
+    public static final String FILENAME = "transport2.json";
+
     private static int m, n;
     private double graphWidth = 1200;
     private double graphHeight = 800;
@@ -100,6 +100,17 @@ public class CountryController {
     void onSearchPressed(ActionEvent event) {
         if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
             System.out.println("Pretrazujemo Dijkstra...");
+            Node source = graph.getNode(selectedFrom);
+            Node target = graph.getNode(selectedTo);
+
+            List<Node> path = Dijkstra.dijkstra(graph, source, target, selectedCriteria);
+
+            System.out.println("Putanja:");
+            for (Node n : path) {
+                System.out.println(n.getId());
+            }
+            List<Route> routes = buildRoutesFromPath(path, selectedCriteria);
+            printRoutes(routes);
         }
         else {
             System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
@@ -186,6 +197,8 @@ public class CountryController {
         for (Station s : data.getStations()){
             String city = s.getCity();
             Node node = graph.addNode(city);
+         //   node.setAttribute("busStation");
+         //   node.setAttribute("trainStation");
 
             node.setAttribute("ui.label", city);
 
@@ -198,6 +211,9 @@ public class CountryController {
 
             node.setAttribute("xyz", px, py, 0.0);
             node.setAttribute("station", s);
+            node.setAttribute("distance", Double.POSITIVE_INFINITY);
+            node.setAttribute("previous", (Node) null);
+
 
             if (s.getBusStation()!=null) stationCodeToCity.put(s.getBusStation(), city);
             if (s.getTrainStation() != null) stationCodeToCity.put(s.getTrainStation(), city);
@@ -226,6 +242,8 @@ public class CountryController {
                 e.setAttribute("minPrice", Integer.MAX_VALUE);
                 e.setAttribute("departuresCount", 0);
                 e.setAttribute("minTransferTime", d.getMinTransferTime());
+                e.setAttribute("type", d.getType());
+
             }
 
             // dodavanje departure u listu
@@ -241,6 +259,7 @@ public class CountryController {
 
             e.setAttribute("minDuration", minD);
             e.setAttribute("minPrice", minP);
+            e.setAttribute("width", minP);
             e.setAttribute("departuresCount", cnt);
 
             // da labela pokazuje minPrice
@@ -311,6 +330,11 @@ public class CountryController {
             case LEAST_TRANSFERS -> transfers.doubleValue();
             default -> dur.doubleValue();
         };
+//        return switch (criteria){
+//            case FASTEST -> e.getNumber("minDuration").doubleValue();
+//            case CHEAPEST -> e.getNumber("minPrice").doubleValue();
+//            case LEAST_TRANSFERS -> e.getNumber("departuresCount").doubleValue();
+//        };
     }
     public static int getM() {
         return m;
@@ -327,4 +351,121 @@ public class CountryController {
     public static void setN(int n) {
         CountryController.n = n;
     }
-}
+    private List<Route> buildRoutesFromPath(List<Node> path, Criteria criteria){
+        List<Route> routes = new ArrayList<>();
+        if (path == null || path.size() < 2) return routes;
+
+        for (int i = 0; i < path.size() - 1; i++){
+            Node a = path.get(i);
+            Node b = path.get(i + 1);
+
+            String edgeId = a.getId() + "->" + b.getId();
+            Edge e = graph.getEdge(edgeId);
+            if (e == null) {
+
+                for (Edge out : a.edges().toList()){
+                    if (out.getTargetNode().getId().equals(b.getId())){
+                        e = out;
+                        break;
+                    }
+                }
+            }
+
+            if (e == null) {
+                System.out.println("Nije pronađena ivica između " + a.getId() + " i " + b.getId());
+                continue;
+            }
+            Departure chosen = chooseDepartureForEdge(e, criteria);
+            if (chosen == null) {
+                Number minP = (Number) e.getAttribute("minPrice");
+                Number minD = (Number) e.getAttribute("minDuration");
+                Route r = new Route();
+                r.setSource(a.getId());
+                r.setDestination(b.getId());
+                r.setType((String) e.getAttribute("type")); // možda null
+                r.setPrice(minP != null ? minP.intValue() : (minD != null ? minD.intValue() : 0));
+                r.setPath(Arrays.asList(a.getId(), b.getId()));
+                routes.add(r);
+            } else {
+                Route r = new Route();
+                r.setSource(a.getId());
+                r.setDestination(b.getId());
+                r.setType(chosen.getType());
+                r.setPrice(chosen.getPrice());
+                r.setPath(Arrays.asList(a.getId(), b.getId()));
+                routes.add(r);
+            }
+        }
+
+        return routes;
+    }
+
+
+    private Departure chooseDepartureForEdge(Edge e, Criteria criteria)
+    {
+        Object obj = e.getAttribute("departures");
+        if (obj == null) return null;
+        @SuppressWarnings("unchecked")
+        List<Departure> deps = (List<Departure>) obj;
+        if (deps.isEmpty()) return null;
+        Departure best = deps.get(0);
+        switch (criteria){
+            case CHEAPEST -> {
+                int min = best.getPrice();
+                for (Departure d : deps){
+                    if (d.getPrice() < min){
+                        best = d;
+                        min = d.getPrice();
+                    }
+                }
+            }
+            case FASTEST -> {
+//                int min = best.getDuration();
+//                for (Departure d : deps){
+//                    if (d.getDuration() < min){
+//                        best = d;
+//                        min = d.getDuration();
+//                    }
+//                }
+            }
+
+            case LEAST_TRANSFERS -> {
+                // ne postoji broj presjedanja direktno u Departure; koristi minTransferTime kao proxy
+//                int min = best.getMinTransferTime();
+//                for (Departure d : deps){
+//                    if (d.getMinTransferTime() < min){
+//                        best = d;
+//                        min = d.getMinTransferTime();
+//                    }
+//                }
+            }
+
+            default -> {
+                // fallback na najjeftiniju
+                int min = best.getPrice();
+                for (Departure d : deps){
+                    if (d.getPrice() < min){
+                        best = d;
+                        min = d.getPrice();
+                    }
+                }
+            }
+        }
+        return best;
+    }
+
+    private void printRoutes(List<Route> routes) {
+        System.out.println("Putanja (čvorovi):");
+        for (Route r : routes) {
+            System.out.println(r.getSource());
+        }
+        System.out.println("\nDetalji ruta (po ivici):");
+        for (int i = 0; i < routes.size(); i++) {
+            Route r = routes.get(i);
+            System.out.println("Segment " + (i + 1) + ": " + r.getSource() + " -> " + r.getDestination()
+                    + " | tip: " + r.getType()
+                    + " | cijena: " + r.getPrice());
+        }
+
+    }
+    }
