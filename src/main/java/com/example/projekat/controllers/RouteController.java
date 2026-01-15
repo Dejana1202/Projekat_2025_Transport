@@ -1,14 +1,20 @@
 package com.example.projekat.controllers;
 
+import com.example.projekat.models.Bill;
 import com.example.projekat.models.Route;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
 import javafx.scene.control.TableColumn;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RouteController {
@@ -25,7 +31,10 @@ public class RouteController {
 
     @FXML
     private TableColumn<Route, String> typeColumn;
+    @FXML
+    private Button buyCardButton;
     private List<Route> routes;
+    private Bill currentBill;
 
     public void setRoutes(List<Route> routes){
         this.routes = routes;
@@ -69,5 +78,29 @@ public class RouteController {
         }
         return prefix + "_" + coords;
     }
+    @FXML
+    void onBuyCardPressed(ActionEvent event) {
+        if (currentBill == null){
+            prepareBillFromRoutes();
+        }
+        System.out.println(currentBill);
+    }
+    private void prepareBillFromRoutes(){
+        if (this.routes == null || this.routes.isEmpty()){
+            currentBill = new Bill(new ArrayList<>(), LocalDateTime.now(), 0);
+            return;
+        }
+        List<String> relations = new ArrayList<>();
+        int totalPrice = 0;
 
+        for (Route r: this.routes){
+            if (r==null) continue;
+            String formattedSource = formatDepartureCode(r.getSource(), r.getType());
+            String destination = r.getDestination() != null? r.getDestination(): "";
+            relations.add(formattedSource + " : " + destination);
+            totalPrice+= r.getPrice();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        currentBill=new Bill(relations, now, totalPrice);
+    }
 }

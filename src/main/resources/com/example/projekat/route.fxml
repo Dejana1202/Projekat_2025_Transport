@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -20,6 +21,7 @@
             </columns>
             </TableView>
             <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+            <Button fx:id="buyCardButton" onAction="#onBuyCardPressed" text="Kupi kartu" />
         </VBox>
     </children>
 </AnchorPane>
