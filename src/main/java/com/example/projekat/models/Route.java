@@ -8,15 +8,17 @@ public class Route {
     private String source, destination, type;
     private int price;
     private List<String> path;
+    private String departureTime;
     public Route(){
         super();
     }
 
-    public Route(String source, String destination, String type, int price) {
+    public Route(String source, String destination, String type, int price, String departureTime) {
         this.source = source;
         this.destination = destination;
         this.type = type;
         this.price = price;
+        this.departureTime = departureTime;
     }
 
     public String getSource() {
@@ -58,11 +60,20 @@ public class Route {
     public void setPath(List<String> path) {
         this.path = path;
     }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
     @Override
     public String toString(){
         return "Route { " + "source = " + source +
                 '\'' + ", destination='" + destination + '\'' +
                 ", type='" + type + '\'' + ", price=" + price +
-                ", path=" + path + '}';
+                ", path=" + path + ", departure time=" +  departureTime +'}';
     }
 }

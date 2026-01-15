@@ -7,6 +7,9 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Dijkstra {
@@ -100,7 +103,49 @@ public class Dijkstra {
                 Number num = (Number) e.getAttribute("minPrice");
                 return num == null ? Double.POSITIVE_INFINITY : num.doubleValue();
             }
+            case FASTEST ->  {
+                // getNextDeparture in minutes
+                LocalDateTime currentTime = LocalDateTime.now();
+                int hour = currentTime.getHour();
+                int minute = currentTime.getMinute();
+                int currentTimeInMinutes = (hour*60) + minute;
 
+                System.out.println("CURRENT TIME "+currentTime);
+                System.out.println(hour+":"+minute);
+
+// todo: set infinity
+                double minimumDuration = 999999999;
+
+                List<Departure> depList =  (List<Departure>) e.getAttribute("departures");
+                for(Departure d: depList) {
+                    int waitTimeInMinutes = 0;
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
+                    LocalTime departureTime = LocalTime.parse(d.getDepartureTime(),formatter);
+                    int departureTimeInMinutes = departureTime.getHour() * 60 + departureTime.getMinute();
+                    if (currentTimeInMinutes > departureTimeInMinutes){
+// proso voz, sta ako je ponoc uskoro
+                        // currentTime = 23:50, departureTime = 00:15 ------- za 25 minuta
+                        // wait time = 15 - 23*60+50 + 1440
+                        // 15 - 1430 + 1440
+
+                        waitTimeInMinutes = currentTimeInMinutes - departureTimeInMinutes + 1440;
+                    } else {
+                        // nije pros'o
+                        // calculate wait time
+                        waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes;
+
+                    }
+
+                    double currentDepartureDuration = d.getDuration() + d.getMinTransferTime() + waitTimeInMinutes;
+                    // find departure that has the best weight, set it to smallestWeight
+
+                    if( currentDepartureDuration < minimumDuration) {
+                        minimumDuration = currentDepartureDuration;
+//                         e.setAttribute("chosenDepartureTime", d.getDepartureTime());
+                    }
+                }
+                return  minimumDuration;
+            }
             case LEAST_TRANSFERS -> {
                 // TODO: incorrect
                 Number num = (Number) e.getAttribute("departuresCount");

@@ -42,7 +42,7 @@
     {"type": "voz", "from": "Z_1_0", "to": "G_0_0", "departureTime": "08:30", "duration": 113, "price": 599, "minTransferTime": 7},
     {"type": "autobus", "from": "A_1_1", "to": "G_1_0", "departureTime": "15:30", "duration": 127, "price": 487, "minTransferTime": 5},
     {"type": "autobus", "from": "A_1_1", "to": "G_1_0", "departureTime": "18:30", "duration": 122, "price": 409, "minTransferTime": 14},
-    {"type": "autobus", "from": "A_1_1", "to": "G_0_1", "departureTime": "23:30", "duration": 45, "price": 405, "minTransferTime": 29},
+    {"type": "autobus", "from": "A_1_1", "to": "G_0_1", "departureTime": "00:05", "duration": 45, "price": 405, "minTransferTime": 29},
     {"type": "autobus", "from": "A_1_1", "to": "G_1_0", "departureTime": "16:45", "duration": 136, "price": 631, "minTransferTime": 16},
     {"type": "autobus", "from": "A_1_1", "to": "G_1_0", "departureTime": "15:45", "duration": 111, "price": 532, "minTransferTime": 28},
     {"type": "voz", "from": "Z_1_1", "to": "G_0_1", "departureTime": "19:15", "duration": 38, "price": 835, "minTransferTime": 7},

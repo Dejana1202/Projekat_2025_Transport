@@ -51,7 +51,7 @@ public class RouteController {
         toColumn.setCellValueFactory(
                 cell ->
                         new SimpleStringProperty(
-                                cell.getValue().getDestination()
+                                cell.getValue().getDestination() + "(" + cell.getValue().getDepartureTime() +")"
 
                         )
         );
@@ -84,6 +84,7 @@ public class RouteController {
             prepareBillFromRoutes();
         }
         System.out.println(currentBill);
+        // to txt file - ser.
     }
     private void prepareBillFromRoutes(){
         if (this.routes == null || this.routes.isEmpty()){

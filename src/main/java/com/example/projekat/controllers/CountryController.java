@@ -272,6 +272,7 @@ public class CountryController {
                 e.setAttribute("departuresCount", 0);
                 e.setAttribute("minTransferTime", d.getMinTransferTime());
                 e.setAttribute("type", d.getType());
+                e.setAttribute("departureTime", d.getDepartureTime());
 
             }
 
@@ -281,15 +282,16 @@ public class CountryController {
             depList.add(d);
             e.setAttribute("departures", depList);
 
-            int minD = Math.min((Integer)e.getAttribute("minDuration"), d.getDuration());
+           // int minD = Math.min((Integer)e.getAttribute("minDuration"), d.getDuration());
             int minP = Math.min((Integer)e.getAttribute("minPrice"), d.getPrice());
             int cnt = (Integer)e.getAttribute("departuresCount") + 1;
 
 
-            e.setAttribute("minDuration", minD);
+           // e.setAttribute("minDuration", minD);
             e.setAttribute("minPrice", minP);
-            e.setAttribute("width", minP);
+           // e.setAttribute("width", minP);
             e.setAttribute("departuresCount", cnt);
+
 
             // da labela pokazuje minPrice
          //   e.setAttribute("ui.label", String.valueOf(e.getAttribute("minPrice")));
@@ -409,6 +411,7 @@ public class CountryController {
                 r.setType((String) e.getAttribute("type")); // možda null
                 r.setPrice(minP != null ? minP.intValue() : (minD != null ? minD.intValue() : 0));
                 r.setPath(Arrays.asList(a.getId(), b.getId()));
+                r.setDepartureTime((String) e.getAttribute("departureTime"));
                 routes.add(r);
             } else {
                 Route r = new Route();
@@ -417,6 +420,7 @@ public class CountryController {
                 r.setType(chosen.getType());
                 r.setPrice(chosen.getPrice());
                 r.setPath(Arrays.asList(a.getId(), b.getId()));
+                r.setDepartureTime(chosen.getDepartureTime());
                 routes.add(r);
             }
         }
