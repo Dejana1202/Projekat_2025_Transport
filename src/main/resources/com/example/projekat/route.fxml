@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.projekat.controllers.RouteController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.RouteController">
 
+    <children>
+        <VBox prefHeight="356.0" prefWidth="600.0">
+            <Label text="Pronađena ruta (segmenti)" />
+            <TableView fx:id="tableView" prefHeight="320.0">
+            <columns>
+                <TableColumn fx:id="fromColumn" prefWidth="180.0" text="Polazak" />
+                <TableColumn fx:id="toColumn" prefWidth="155.20001220703125" text="Dolazak" />
+                <TableColumn fx:id="typeColumn" prefWidth="141.60003662109375" text="Tip" />
+                <TableColumn fx:id="priceColumn" prefWidth="122.4000244140625" text="Cijena" />
+            </columns>
+            </TableView>
+            <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+        </VBox>
+    </children>
 </AnchorPane>

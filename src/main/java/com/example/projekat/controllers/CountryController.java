@@ -7,8 +7,12 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -29,6 +33,7 @@ public class CountryController {
     private static int m, n;
     private double graphWidth = 1200;
     private double graphHeight = 800;
+    public static RouteController routeController;
 
     @FXML
     private ComboBox<String> criteriaCombo;
@@ -61,6 +66,7 @@ public class CountryController {
     private String selectedFrom = null;
     private String selectedTo = null;
     private Criteria selectedCriteria = null;
+    private List<Route> lastRoutes = new ArrayList<>();
     @FXML
     public void initialize(){
         progressIndicator.setVisible(false);
@@ -94,7 +100,28 @@ public class CountryController {
     }
     @FXML
     void onBestRoutePressed(ActionEvent event) {
+        if (lastRoutes == null || lastRoutes.isEmpty()) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "Nema pronađenih ruta.");
+            a.showAndWait();
+            return;
+        }
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projekat/route.fxml"));
+            Parent root = loader.load();
+            routeController = loader.getController();
+            routeController.setRoutes(lastRoutes);
+
+            Stage newStage = new Stage();
+            newStage.setTitle("Najbolja ruta : ");
+            newStage.setScene(new Scene(root));
+
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     void onSearchPressed(ActionEvent event) {
@@ -111,6 +138,8 @@ public class CountryController {
             }
             List<Route> routes = buildRoutesFromPath(path, selectedCriteria);
             printRoutes(routes);
+            this.lastRoutes = routes;
+            showRouteTableButton.setVisible(true);
         }
         else {
             System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
@@ -330,11 +359,6 @@ public class CountryController {
             case LEAST_TRANSFERS -> transfers.doubleValue();
             default -> dur.doubleValue();
         };
-//        return switch (criteria){
-//            case FASTEST -> e.getNumber("minDuration").doubleValue();
-//            case CHEAPEST -> e.getNumber("minPrice").doubleValue();
-//            case LEAST_TRANSFERS -> e.getNumber("departuresCount").doubleValue();
-//        };
     }
     public static int getM() {
         return m;
@@ -467,5 +491,17 @@ public class CountryController {
                     + " | cijena: " + r.getPrice());
         }
 
+    }
+    private String formatDepartureCode(String nodeId, String transportType){
+        if (nodeId == null) return "";
+        String coords = nodeId;
+        if (coords.startsWith("G_")) {
+            coords = coords.substring(2);
+        }
+        String prefix = "A";
+        if (transportType != null && transportType.toLowerCase().contains("voz")){
+            prefix = "Z";
+        }
+        return prefix + "_" + coords;
     }
     }

@@ -29,7 +29,6 @@ public class Dijkstra {
             if (current == null) break;
             unsettled.remove(current);
 
-            // ako se radi o target-u, možemo prekinuti
             if (current.equals(target) || current.getId().equals(target.getId())) {
                 break;
             }
@@ -96,16 +95,12 @@ public class Dijkstra {
     }
 
     private static double getEdgeWeight(Edge e, Criteria criteria) {
-        // koristimo atribute koje već postavljaš u buildGraph: minPrice, minDuration, departuresCount
         switch (criteria) {
             case CHEAPEST -> {
                 Number num = (Number) e.getAttribute("minPrice");
                 return num == null ? Double.POSITIVE_INFINITY : num.doubleValue();
             }
-            case FASTEST -> {
-                Number num = (Number) e.getAttribute("minDuration");
-                return num == null ? Double.POSITIVE_INFINITY : num.doubleValue();
-            }
+
             case LEAST_TRANSFERS -> {
                 // TODO: incorrect
                 Number num = (Number) e.getAttribute("departuresCount");

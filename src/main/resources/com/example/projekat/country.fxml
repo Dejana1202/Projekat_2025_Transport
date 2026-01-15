@@ -21,7 +21,7 @@
                   <Label fx:id="totalTicketsLabel" prefWidth="60.0" style="-fx-border-color: lightgray; -fx-padding: 4;" text="0" />
 
                   <Button fx:id="searchButton" onAction="#onSearchPressed" text="Pretraži" />
-                  <Button fx:id="showRouteTableButton" onAction="#onBestRoutePressed" text="Najbolja ruta" />
+                  <Button fx:id="showRouteTableButton" onAction="#onBestRoutePressed" text="Najbolja ruta" visible="false" />
                </children>
             </HBox>
             <HBox prefHeight="40.0" spacing="6.0">
