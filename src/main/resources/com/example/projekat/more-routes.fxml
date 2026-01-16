@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.projekat.controllers.MoreRoutesController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="771.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.MoreRoutesController">
+            <children>
+                <VBox prefHeight="771.0" prefWidth="990.0">
+                    <Label text="Ruta 1 : " />
+                    <TableView fx:id="tableView1" prefWidth="1608.0">
+                        <columns>
+                            <TableColumn fx:id="fromColumn1" text="Polazak" />
+                            <TableColumn fx:id="toColumn1" text="Dolazak" />
+                            <TableColumn fx:id="typeColumn1" text="Tip" />
+                            <TableColumn fx:id="priceColumn1" prefWidth="80.80001220703127" text="Cijena" />
+                        </columns>
+                    </TableView>
+                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Button fx:id="buyCardButton1" onAction="#onBuyCardPressed" text="Kupi kartu" />
 
+                    <Label text="Ruta 2 : " />
+                    <TableView fx:id="tableView2">
+                        <columns>
+                            <TableColumn fx:id="fromColumn2" text="Polazak" />
+                            <TableColumn fx:id="toColumn2" text="Dolazak" />
+                            <TableColumn fx:id="typeColumn2" text="Tip" />
+                            <TableColumn fx:id="priceColumn2" prefWidth="80.80001220703127" text="Cijena" />
+                        </columns>
+                    </TableView>
+                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Button fx:id="buyCardButton2" onAction="#onBuyCardPressed" text="Kupi kartu" />
+
+                    <Label text="Ruta 3 : " />
+                    <TableView fx:id="tableView3">
+                        <columns>
+                            <TableColumn fx:id="fromColumn3" text="Polazak" />
+                            <TableColumn fx:id="toColumn3" text="Dolazak" />
+                            <TableColumn fx:id="typeColumn3" text="Tip" />
+                            <TableColumn fx:id="priceColumn3" prefWidth="80.80001220703127" text="Cijena" />
+                        </columns>
+                    </TableView>
+                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Button fx:id="buyCardButton3" onAction="#onBuyCardPressed" text="Kupi kartu" />
+                    <Label text="Ruta 4 : " />
+                    <TableView fx:id="tableView4">
+                        <columns>
+                            <TableColumn fx:id="fromColumn4" text="Polazak" />
+                            <TableColumn fx:id="toColumn4" text="Dolazak" />
+                            <TableColumn fx:id="typeColumn4" text="Tip" />
+                            <TableColumn fx:id="priceColumn4" prefWidth="80.80001220703127" text="Cijena" />
+                        </columns>
+                    </TableView>
+                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Button fx:id="buyCardButton4" onAction="#onBuyCardPressed" text="Kupi kartu" />
+                    <Label text="Ruta 5 : " />
+                    <TableView fx:id="tableView5">
+                        <columns>
+                            <TableColumn fx:id="fromColumn5" text="Polazak" />
+                            <TableColumn fx:id="toColumn5" text="Dolazak" />
+                            <TableColumn fx:id="typeColumn5" text="Tip" />
+                            <TableColumn fx:id="priceColumn5" prefWidth="80.80001220703127" text="Cijena" />
+                        </columns>
+                    </TableView>
+                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Button fx:id="buyCardButton5" onAction="#onBuyCardPressed" text="Kupi kartu" />
+                </VBox>
+            </children>
 </AnchorPane>

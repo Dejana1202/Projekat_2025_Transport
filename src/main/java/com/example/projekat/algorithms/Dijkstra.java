@@ -148,8 +148,8 @@ public class Dijkstra {
             }
             case LEAST_TRANSFERS -> {
                 // TODO: incorrect
-                Number num = (Number) e.getAttribute("departuresCount");
-                return num == null ? Double.POSITIVE_INFINITY : num.doubleValue();
+                //Number num = (Number) e.getAttribute("departuresCount");
+                return 1;
             }
             default -> {
                 Number num = (Number) e.getAttribute("minDuration");

@@ -1,10 +1,12 @@
 package com.example.projekat.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Bill {
+public class Bill implements Serializable {
     private static Integer billId;
+    private Integer id;
     private List<String> relations;
     private LocalDateTime purchaseTime;
     private int price;
@@ -16,6 +18,14 @@ public class Bill {
         this.relations = relations;
         this.purchaseTime = purchaseTime;
         this.price = price;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public static Integer getBillId() {

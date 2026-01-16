@@ -2,6 +2,7 @@ package com.example.projekat.controllers;
 
 import com.example.projekat.algorithms.Dijkstra;
 import com.example.projekat.models.*;
+import com.example.projekat.utils.SerializationUtil;
 import com.example.projekat.utils.TransportDataUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -71,6 +72,10 @@ public class CountryController {
     public void initialize(){
         progressIndicator.setVisible(false);
         criteriaCombo.getItems().addAll("Najkraće vrijeme putovanja", "Najniža cijena", "Najmanji broj presjedanja");
+        int totalAmount = SerializationUtil.sumPricesFromBills("./reports");
+        totalAmountLabel.setText(String.valueOf(totalAmount));
+        int totalTickets = SerializationUtil.getBillCounter();
+        totalTicketsLabel.setText(String.valueOf(totalTickets));
         loadGraph(FILENAME);
     }
     @FXML

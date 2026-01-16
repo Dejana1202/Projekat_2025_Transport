@@ -2,6 +2,7 @@ package com.example.projekat.controllers;
 
 import com.example.projekat.models.Bill;
 import com.example.projekat.models.Route;
+import com.example.projekat.utils.SerializationUtil;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -85,6 +86,13 @@ public class RouteController {
         }
         System.out.println(currentBill);
         // to txt file - ser.
+        boolean ok = SerializationUtil.saveBill(currentBill, "./reports");
+        if (ok){
+            System.out.println("Racun sacuvan.");
+        }
+        else{
+            System.out.println("Greska pri cuvanju racuna.");
+        }
     }
     private void prepareBillFromRoutes(){
         if (this.routes == null || this.routes.isEmpty()){
