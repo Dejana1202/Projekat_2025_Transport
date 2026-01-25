@@ -470,36 +470,17 @@ public static final String FILENAME = "transport5.json";
         if (deps.isEmpty()) return null;
         Departure best = deps.get(0);
         switch (criteria){
-            case CHEAPEST -> {
-                int min = best.getPrice();
+            case FASTEST -> {
+                int min = best.getDuration();
                 for (Departure d : deps){
-                    if (d.getPrice() < min){
+                    if (d.getDuration() < min){
                         best = d;
-                        min = d.getPrice();
+                        min = d.getDuration();
                     }
                 }
             }
-            case FASTEST -> {
-//                int min = best.getDuration();
-//                for (Departure d : deps){
-//                    if (d.getDuration() < min){
-//                        best = d;
-//                        min = d.getDuration();
-//                    }
-//                }
-            }
 
-            case LEAST_TRANSFERS -> {
-                // ne postoji broj presjedanja direktno u Departure; koristi minTransferTime kao proxy
-//                int min = best.getMinTransferTime();
-//                for (Departure d : deps){
-//                    if (d.getMinTransferTime() < min){
-//                        best = d;
-//                        min = d.getMinTransferTime();
-//                    }
-//                }
-            }
-
+            // CHEAPEST and LEAST_TRANSFERS should take the cheapest route because transfers num is always 1 for departure, take cheapest anyway
             default -> {
                 // fallback na najjeftiniju
                 int min = best.getPrice();

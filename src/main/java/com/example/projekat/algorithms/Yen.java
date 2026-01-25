@@ -18,12 +18,12 @@ public class Yen {
         List<List<Route>> aList = new ArrayList<>();
         aList.add(A0);
 
-        PriorityQueue<List<Route>> queue = new PriorityQueue<>(new RouteComparator());
+        PriorityQueue<List<Route>> queue = new PriorityQueue<>(new RouteComparator(criteria));
 
         // Find k best routes. K starts at 1 since the first route is provided by dijkstra
         for(int k = 1; k < bestRoutesNum; k++) {
             // Get spur nodes, one by one, for every "last best route" - initially the one returned by dijkstra
-            for(int i = 0; i < aList.get(k-1).size() - 2; i++){
+            for(int i = 0; i < aList.get(k-1).size() - 1; i++){
 
                 // Add missing edges
                 for(Edge e: graph.edges().toList()){
@@ -43,6 +43,7 @@ public class Yen {
                 List<Route> rootPath = aList.get(k - 1).subList(0, i);
 
                 for(List<Route> p: aList){
+                    if(i > p.size()) continue;
                     List<Route> subPath = p.subList(0, i);
                     // Remove edges from original path
                     if(rootPath.equals(subPath)) {
