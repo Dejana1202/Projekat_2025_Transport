@@ -27,12 +27,13 @@ public class MainController {
     @FXML
     public void generate(){
         try {
-//            int m = Integer.parseInt(mField.getText());
-//            int n = Integer.parseInt(nField.getText());
-//
-//            CountryController.setM(m);
-//            CountryController.setN(n);
-//            new TransportDataGenerator(m, n);
+
+            int m = Integer.parseInt(mField.getText());
+            int n = Integer.parseInt(nField.getText());
+
+            CountryController.setM(m);
+            CountryController.setN(n);
+            new TransportDataGenerator(m, n);
                 CountryController.setM(2);
                 CountryController.setN(2);
             messageLabel.setText("JSON fajl je generisan!");

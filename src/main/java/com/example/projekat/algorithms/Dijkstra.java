@@ -16,12 +16,15 @@ public class Dijkstra {
 
     public static List<Node> dijkstra(Graph graph, Node source, Node target, Criteria criteria) {
 //        // inicijalizacija atributa za sve čvorove
-//        for (Node n : graph.getNodeSet()) {
-//            n.setAttribute("distance", Double.POSITIVE_INFINITY);
-//            n.setAttribute("previous", null);
-//        }
+        for (int i = 0; i < graph.getNodeCount(); i++) {
+            Node n = graph.getNode(i);
+            n.setAttribute("distance", Double.POSITIVE_INFINITY);
+            n.setAttribute("previous", null);
+        }
 
         source.setAttribute("distance", 0.0);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
         Set<Node> settled = new HashSet<>();
         Set<Node> unsettled = new HashSet<>();
@@ -38,12 +41,14 @@ public class Dijkstra {
 
             // iteriraj kroz sve izlazne grane (usmjeren graf)
             for (Edge e : current.edges().toList()) {
+                if(e.getAttribute("disabled") != null && e.getAttribute("disabled").equals(true)) continue;
+
                 Node neighbor = e.getTargetNode();
 
                 // Why?
                 if (settled.contains(neighbor)) continue;
 
-                double edgeWeight = getEdgeWeight(e, criteria);
+                double edgeWeight = getEdgeWeight(e, criteria, currentDateTime);
 
                 Number currDistN = (Number) current.getAttribute("distance");
                 double currentDistance = currDistN == null ? Double.POSITIVE_INFINITY : currDistN.doubleValue();
@@ -57,6 +62,11 @@ public class Dijkstra {
                     neighbor.setAttribute("distance", newDistance);
                     neighbor.setAttribute("previous", current);
                     unsettled.add(neighbor);
+
+                    if(Criteria.FASTEST.equals(criteria)) {
+                        // Track current time when the bus/train arrives
+                        currentDateTime = currentDateTime.plusMinutes((int)edgeWeight);
+                    }
                 }
             }
 
@@ -87,6 +97,8 @@ public class Dijkstra {
         Node lowest = null;
         double min = Double.POSITIVE_INFINITY;
         for (Node n : nodes) {
+            if(n.getAttribute("disabled") != null && (boolean) n.getAttribute("disabled") == true) continue;
+
             Number d = (Number) n.getAttribute("distance");
             double dist = d == null ? Double.POSITIVE_INFINITY : d.doubleValue();
             if (dist < min) {
@@ -97,7 +109,7 @@ public class Dijkstra {
         return lowest;
     }
 
-    private static double getEdgeWeight(Edge e, Criteria criteria) {
+    private static double getEdgeWeight(Edge e, Criteria criteria, LocalDateTime startTime) {
         switch (criteria) {
             case CHEAPEST -> {
                 Number num = (Number) e.getAttribute("minPrice");
@@ -105,12 +117,12 @@ public class Dijkstra {
             }
             case FASTEST ->  {
                 // getNextDeparture in minutes
-                LocalDateTime currentTime = LocalDateTime.now();
-                int hour = currentTime.getHour();
-                int minute = currentTime.getMinute();
+//                LocalDateTime currentTime = LocalDateTime.now();
+                int hour = startTime.getHour();
+                int minute = startTime.getMinute();
                 int currentTimeInMinutes = (hour*60) + minute;
 
-                System.out.println("CURRENT TIME "+currentTime);
+                System.out.println("startTime TIME "+startTime);
                 System.out.println(hour+":"+minute);
 
 // todo: set infinity
@@ -133,7 +145,6 @@ public class Dijkstra {
                         // nije pros'o
                         // calculate wait time
                         waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes;
-
                     }
 
                     double currentDepartureDuration = d.getDuration() + d.getMinTransferTime() + waitTimeInMinutes;
@@ -144,7 +155,7 @@ public class Dijkstra {
 //                         e.setAttribute("chosenDepartureTime", d.getDepartureTime());
                     }
                 }
-                return  minimumDuration;
+                return minimumDuration;
             }
             case LEAST_TRANSFERS -> {
                 // TODO: incorrect
@@ -155,7 +166,6 @@ public class Dijkstra {
                 Number num = (Number) e.getAttribute("minDuration");
                 return num == null ? Double.POSITIVE_INFINITY : num.doubleValue();
             }
-
         }
     }
 

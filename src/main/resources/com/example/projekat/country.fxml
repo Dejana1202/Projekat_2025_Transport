@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.CountryController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projekat.controllers.CountryController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,6 +22,7 @@
 
                   <Button fx:id="searchButton" onAction="#onSearchPressed" text="Pretraži" />
                   <Button fx:id="showRouteTableButton" onAction="#onBestRoutePressed" text="Najbolja ruta" visible="false" />
+                  <Button fx:id="showTopKRoutes" onAction="#onTopKRoutesPressed" text="Top 5" visible="false" />
                </children>
             </HBox>
             <HBox prefHeight="40.0" spacing="6.0">

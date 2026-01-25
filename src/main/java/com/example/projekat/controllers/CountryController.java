@@ -1,6 +1,7 @@
 package com.example.projekat.controllers;
 
 import com.example.projekat.algorithms.Dijkstra;
+import com.example.projekat.algorithms.Yen;
 import com.example.projekat.models.*;
 import com.example.projekat.utils.SerializationUtil;
 import com.example.projekat.utils.TransportDataUtil;
@@ -28,9 +29,9 @@ import java.util.List;
 import java.util.*;
 
 public class CountryController {
-    //public static final String FILENAME = "transport_data.json";
-    public static final String FILENAME = "transport2.json";
-
+//    public static final String FILENAME = "transport_data.json";
+   // public static final String FILENAME = "transport2.json";
+public static final String FILENAME = "transport5.json";
     private static int m, n;
     private double graphWidth = 1200;
     private double graphHeight = 800;
@@ -63,6 +64,8 @@ public class CountryController {
     @FXML
     private Button searchButton;
     @FXML
+    private Button showTopKRoutes;
+    @FXML
     private Button showRouteTableButton;
     private String selectedFrom = null;
     private String selectedTo = null;
@@ -81,12 +84,35 @@ public class CountryController {
     @FXML
     private void onFromSelected(){
         selectedFrom = fromCombo.getValue();
-        System.out.println("Odrediste : " + selectedFrom);
+        System.out.println("Polaziste : " + selectedFrom);
+    }
+    @FXML
+    private void onTopKRoutesPressed(){
+        if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
+            System.out.println("Pretrazujemo Dijkstra...");
+            Node source = graph.getNode(selectedFrom);
+            Node target = graph.getNode(selectedTo);
+
+            List<List<Route>> path = Yen.yen(graph, source, target, selectedCriteria);
+
+
+//            System.out.println("Putanja:");
+//            for (Node n : path) {
+//                System.out.println(n.getId());
+//            }
+//            List<Route> routes = buildRoutesFromPath(graph, path, selectedCriteria);
+//            printRoutes(routes);
+//            this.lastRoutes = routes;
+//            showRouteTableButton.setVisible(true);
+        }
+        else {
+            System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
+        }
     }
     @FXML
     private void onToSelected(){
         selectedTo = toCombo.getValue();
-        System.out.println("Polaziste : " + selectedTo);
+        System.out.println("Odrediste : " + selectedTo);
 
     }
     @FXML
@@ -141,10 +167,11 @@ public class CountryController {
             for (Node n : path) {
                 System.out.println(n.getId());
             }
-            List<Route> routes = buildRoutesFromPath(path, selectedCriteria);
+            List<Route> routes = buildRoutesFromPath(graph, path, selectedCriteria);
             printRoutes(routes);
             this.lastRoutes = routes;
             showRouteTableButton.setVisible(true);
+            showTopKRoutes.setVisible(true);
         }
         else {
             System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
@@ -382,7 +409,7 @@ public class CountryController {
     public static void setN(int n) {
         CountryController.n = n;
     }
-    private List<Route> buildRoutesFromPath(List<Node> path, Criteria criteria){
+    public static List<Route> buildRoutesFromPath(Graph graph, List<Node> path, Criteria criteria){
         List<Route> routes = new ArrayList<>();
         if (path == null || path.size() < 2) return routes;
 
@@ -434,7 +461,7 @@ public class CountryController {
     }
 
 
-    private Departure chooseDepartureForEdge(Edge e, Criteria criteria)
+    public static Departure chooseDepartureForEdge(Edge e, Criteria criteria)
     {
         Object obj = e.getAttribute("departures");
         if (obj == null) return null;
