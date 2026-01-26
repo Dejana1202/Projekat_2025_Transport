@@ -19,7 +19,7 @@
                             <TableColumn fx:id="priceColumn1" prefWidth="80.80001220703127" text="Cijena" />
                         </columns>
                     </TableView>
-                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Label fx:id="totalLabel1" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
                     <Button fx:id="buyCardButton1" onAction="#onBuyCardPressed" text="Kupi kartu" />
 
                     <Label text="Ruta 2 : " />
@@ -31,7 +31,7 @@
                             <TableColumn fx:id="priceColumn2" prefWidth="80.80001220703127" text="Cijena" />
                         </columns>
                     </TableView>
-                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Label fx:id="totalLabel2" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
                     <Button fx:id="buyCardButton2" onAction="#onBuyCardPressed" text="Kupi kartu" />
 
                     <Label text="Ruta 3 : " />
@@ -43,7 +43,7 @@
                             <TableColumn fx:id="priceColumn3" prefWidth="80.80001220703127" text="Cijena" />
                         </columns>
                     </TableView>
-                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Label fx:id="totalLabel3" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
                     <Button fx:id="buyCardButton3" onAction="#onBuyCardPressed" text="Kupi kartu" />
                     <Label text="Ruta 4 : " />
                     <TableView fx:id="tableView4">
@@ -54,7 +54,7 @@
                             <TableColumn fx:id="priceColumn4" prefWidth="80.80001220703127" text="Cijena" />
                         </columns>
                     </TableView>
-                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Label fx:id="totalLabel4" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
                     <Button fx:id="buyCardButton4" onAction="#onBuyCardPressed" text="Kupi kartu" />
                     <Label text="Ruta 5 : " />
                     <TableView fx:id="tableView5">
@@ -65,7 +65,7 @@
                             <TableColumn fx:id="priceColumn5" prefWidth="80.80001220703127" text="Cijena" />
                         </columns>
                     </TableView>
-                    <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+                    <Label fx:id="totalLabel5" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
                     <Button fx:id="buyCardButton5" onAction="#onBuyCardPressed" text="Kupi kartu" />
                 </VBox>
             </children>

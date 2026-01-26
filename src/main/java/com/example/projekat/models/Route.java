@@ -9,16 +9,38 @@ public class Route {
     private int price;
     private List<String> path;
     private String departureTime;
+    private int durationMinutes;
+    private int minTransferTime;
+
     public Route(){
         super();
     }
 
-    public Route(String source, String destination, String type, int price, String departureTime) {
+    public Route(String source, String destination, String type, int price, List<String> path, String departureTime, int durationMinutes, int minTransferTime) {
         this.source = source;
         this.destination = destination;
         this.type = type;
         this.price = price;
+        this.path = path;
         this.departureTime = departureTime;
+        this.durationMinutes = durationMinutes;
+        this.minTransferTime = minTransferTime;
+    }
+
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public void setDurationMinutes(int durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public int getMinTransferTime() {
+        return minTransferTime;
+    }
+
+    public void setMinTransferTime(int minTransferTime) {
+        this.minTransferTime = minTransferTime;
     }
 
     public String getSource() {

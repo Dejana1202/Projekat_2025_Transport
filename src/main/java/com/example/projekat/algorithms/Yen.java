@@ -27,7 +27,10 @@ public class Yen {
 
                 // Add missing edges
                 for(Edge e: graph.edges().toList()){
-                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled").equals(true)) {
+//                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled").equals(true)) {
+//                        e.removeAttribute("disabled");
+//                    }
+                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled")) {
                         e.removeAttribute("disabled");
                     }
                 }
@@ -37,6 +40,9 @@ public class Yen {
                     if(n == null) continue;
                     n.setAttribute("distance", Double.POSITIVE_INFINITY);
                     n.setAttribute("previous", null);
+                    if (n.hasAttribute("disabled")){
+                        n.removeAttribute("disabled");
+                    }
                 }
 
                 Route spurRoute = aList.get(k-1).get(i);

@@ -140,7 +140,9 @@ public class Dijkstra {
                         // wait time = 15 - 23*60+50 + 1440
                         // 15 - 1430 + 1440
 
-                        waitTimeInMinutes = currentTimeInMinutes - departureTimeInMinutes + 1440;
+                        //waitTimeInMinutes = currentTimeInMinutes - departureTimeInMinutes + 1440;
+                        // and in  RouteComparator class
+                        waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes + 1400;
                     } else {
                         // nije pros'o
                         // calculate wait time

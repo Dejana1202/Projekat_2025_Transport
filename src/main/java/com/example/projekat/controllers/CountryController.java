@@ -95,6 +95,20 @@ public static final String FILENAME = "transport5.json";
 
             List<List<Route>> path = Yen.yen(graph, source, target, selectedCriteria);
 
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projekat/more-routes.fxml"));
+                Parent root = loader.load();
+                MoreRoutesController controller = loader.getController();
+                controller.setRoutes(path);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Alternativne rute");
+                stage.show();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
 
 //            System.out.println("Putanja:");
 //            for (Node n : path) {
@@ -275,6 +289,9 @@ public static final String FILENAME = "transport5.json";
             node.setAttribute("distance", Double.POSITIVE_INFINITY);
             node.setAttribute("previous", (Node) null);
 
+            // for each node set arrival time
+        //    node.setAttribute("arrivalTime", null);
+
 
             if (s.getBusStation()!=null) stationCodeToCity.put(s.getBusStation(), city);
             if (s.getTrainStation() != null) stationCodeToCity.put(s.getTrainStation(), city);
@@ -453,6 +470,8 @@ public static final String FILENAME = "transport5.json";
                 r.setPrice(chosen.getPrice());
                 r.setPath(Arrays.asList(a.getId(), b.getId()));
                 r.setDepartureTime(chosen.getDepartureTime());
+                r.setDurationMinutes(chosen.getDuration());
+                r.setMinTransferTime(chosen.getMinTransferTime());
                 routes.add(r);
             }
         }
