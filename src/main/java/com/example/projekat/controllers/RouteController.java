@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
 import javafx.scene.control.TableColumn;
@@ -35,6 +36,8 @@ public class RouteController {
     private TableColumn<Route, String> typeColumn;
     @FXML
     private Button buyCardButton;
+    @FXML
+    private Label totalLabel;
     private List<Route> routes;
     private Bill currentBill;
 
@@ -66,6 +69,13 @@ public class RouteController {
                 cell ->
                         new SimpleIntegerProperty(cell.getValue().getPrice())
         );
+        int totalPrice = calculateTotalPrice(routes);
+        int totalMinutes = calculateTotalMinutes(routes);
+        String formatted = formatMinutes(totalMinutes);
+
+        if (totalLabel!=null){
+            totalLabel.setText("Ukupno : " + formatted + ", " + totalPrice + " novčanih jedinica.");
+        }
     }
 
     private String formatDepartureCode(String nodeId, String transportType){
@@ -118,5 +128,27 @@ public class RouteController {
         }
         LocalDateTime now = LocalDateTime.now();
         currentBill=new Bill(relations, now, totalPrice);
+    }
+    private int calculateTotalPrice(List<Route> routes){
+        if (routes== null)return 0;
+        int totalPrice = 0;
+        for (Route r : routes){
+            totalPrice+=Math.max(0, r.getPrice());
+        }
+        return totalPrice;
+    }
+    private int calculateTotalMinutes(List<Route> routes){
+        if (routes == null) return 0;
+        int totalMinutes = 0;
+        for (Route r : routes){
+            totalMinutes+=r.getDurationMinutes();
+            totalMinutes+=r.getMinTransferTime();
+        }
+        return totalMinutes;
+    }
+    private String formatMinutes(int totalMinutes){
+        int hours = totalMinutes / 60;
+        int minutes = totalMinutes % 60;
+        return hours + "h " + minutes + "min";
     }
 }

@@ -149,7 +149,7 @@ public class MoreRoutesController {
             String formatted = formatMinutes(totalMinutes);
             Label label = totals.get(i);
             if (label!=null){
-                label.setText("Ukupno : " + formatted + ", " + totalPrice + " novcanih jedinica.");
+                label.setText("Ukupno : " + formatted + ", " + totalPrice + " novčanih jedinica.");
             }
         }
 

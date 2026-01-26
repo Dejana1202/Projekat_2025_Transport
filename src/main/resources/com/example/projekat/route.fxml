@@ -20,7 +20,7 @@
                 <TableColumn fx:id="priceColumn" prefWidth="122.4000244140625" text="Cijena" />
             </columns>
             </TableView>
-            <Label text="Ukupno : []h []min, [] novčanih jedinica." />
+            <Label fx:id="totalLabel" text="Ukupno : 0h 0min, 0 novčanih jedinica." />
             <Button fx:id="buyCardButton" onAction="#onBuyCardPressed" text="Kupi kartu" />
         </VBox>
     </children>
