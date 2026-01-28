@@ -27,12 +27,12 @@ public class Yen {
 
                 // Add missing edges
                 for(Edge e: graph.edges().toList()){
-//                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled").equals(true)) {
-//                        e.removeAttribute("disabled");
-//                    }
-                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled")) {
+                    if(e.getAttribute("disabled") != null) {
                         e.removeAttribute("disabled");
                     }
+//                    if(e.getAttribute("disabled") != null && (boolean) e.getAttribute("disabled")) {
+//                        e.removeAttribute("disabled");
+//                    }
                 }
 
                 for (int iterator = 0; iterator < graph.getNodeCount(); iterator++) {
@@ -67,7 +67,6 @@ public class Yen {
                     // remove nodes from graph and remember them
                     if(routeNode.equals(spurRoute) == false){
                         graph.getNode(routeNode.getSource()).setAttribute("disabled", true);
-
                     }
                 }
 
@@ -93,6 +92,19 @@ public class Yen {
                 break;
             }
             aList.add(queue.poll());
+        }
+
+        // Reset nodes
+        for(Node n: graph.nodes().toList()){
+            if(n.getAttribute("disabled") != null) {
+                n.removeAttribute("disabled");
+            }
+        }
+        // Reset edges back to normal
+        for(Edge e: graph.edges().toList()){
+            if(e.getAttribute("disabled") != null) {
+                e.removeAttribute("disabled");
+            }
         }
 
         return aList;

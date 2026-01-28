@@ -171,6 +171,7 @@ public static final String FILENAME = "transport5.json";
     @FXML
     void onSearchPressed(ActionEvent event) {
         if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
+
             System.out.println("Pretrazujemo Dijkstra...");
             Node source = graph.getNode(selectedFrom);
             Node target = graph.getNode(selectedTo);
