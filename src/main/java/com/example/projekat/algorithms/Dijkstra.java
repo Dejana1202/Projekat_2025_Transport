@@ -20,11 +20,13 @@ public class Dijkstra {
             Node n = graph.getNode(i);
             n.setAttribute("distance", Double.POSITIVE_INFINITY);
             n.setAttribute("previous", null);
+            n.removeAttribute("currentTime");
         }
 
-        source.setAttribute("distance", 0.0);
-
         LocalDateTime currentDateTime = LocalDateTime.now();
+        source.setAttribute("distance", 0.0);
+        source.setAttribute("currentTime", currentDateTime);
+
 
         Set<Node> settled = new HashSet<>();
         Set<Node> unsettled = new HashSet<>();
@@ -39,8 +41,14 @@ public class Dijkstra {
                 break;
             }
 
+            // Used to keep track of time
+            double minEdgeWeight = 999999999;
             // iteriraj kroz sve izlazne grane (usmjeren graf)
             for (Edge e : current.edges().toList()) {
+                if(e.getSourceNode().equals(current) == false) {
+                    // Don't use edges that go in the opposite way
+                    continue;
+                }
                 if(e.getAttribute("disabled") != null && e.getAttribute("disabled").equals(true)) continue;
 
                 Node neighbor = e.getTargetNode();
@@ -48,7 +56,7 @@ public class Dijkstra {
                 // Why?
                 if (settled.contains(neighbor)) continue;
 
-                double edgeWeight = getEdgeWeight(e, criteria, currentDateTime);
+                double edgeWeight = getEdgeWeight(e, criteria, (LocalDateTime) current.getAttribute("currentTime"));
 
                 Number currDistN = (Number) current.getAttribute("distance");
                 double currentDistance = currDistN == null ? Double.POSITIVE_INFINITY : currDistN.doubleValue();
@@ -61,15 +69,20 @@ public class Dijkstra {
                 if (newDistance < neighborDistance) {
                     neighbor.setAttribute("distance", newDistance);
                     neighbor.setAttribute("previous", current);
+                    neighbor.setAttribute("currentTime", ((LocalDateTime)((LocalDateTime) current.getAttribute("currentTime")).plusMinutes((int)edgeWeight)));
                     unsettled.add(neighbor);
 
-                    if(Criteria.FASTEST.equals(criteria)) {
-                        // Track current time when the bus/train arrives
-                        currentDateTime = currentDateTime.plusMinutes((int)edgeWeight);
-                    }
+//                    if(Criteria.FASTEST.equals(criteria)) {
+//                        // Track current time when the bus/train arrives
+//                        currentDateTime = currentDateTime.plusMinutes((int)minEdgeWeight);
+//                    }
+//                    minEdgeWeight = edgeWeight;
                 }
             }
-
+//            if(Criteria.FASTEST.equals(criteria)) {
+//                // Track current time when the bus/train arrives
+//                currentDateTime = currentDateTime.plusMinutes((int)minEdgeWeight);
+//            }
             settled.add(current);
         }
 
@@ -142,7 +155,7 @@ public class Dijkstra {
 
                         //waitTimeInMinutes = currentTimeInMinutes - departureTimeInMinutes + 1440;
                         // and in  RouteComparator class
-                        waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes + 1400;
+                        waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes + 1440;
                     } else {
                         // nije pros'o
                         // calculate wait time

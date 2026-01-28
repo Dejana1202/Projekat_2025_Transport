@@ -75,21 +75,24 @@ public class RouteComparator implements Comparator<List<Route>> {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
 
         LocalDateTime currentTime = LocalDateTime.now();
-        int hour1 = currentTime.getHour();
-        int minute1 = currentTime.getMinute();
-        int currentTimeInMinutes = (hour1*60) + minute1;
 
         for(Route r : routeList) {
             LocalTime departureTime = LocalTime.parse(r.getDepartureTime(),formatter);
             int departureTimeInMinutes = departureTime.getHour() * 60 + departureTime.getMinute();
+
+            int hour1 = currentTime.getHour();
+            int minute1 = currentTime.getMinute();
+            int currentTimeInMinutes = (hour1*60) + minute1;
+
             if (currentTimeInMinutes > departureTimeInMinutes){
 // proso voz, sta ako je ponoc uskoro
                 // currentTime = 23:50, departureTime = 00:15 ------- za 25 minuta
                 // wait time = 15 - 23*60+50 + 1440
                 // 15 - 1430 + 1440
 
+                // 1440 minutes in a day
 //                waitTimeInMinutes = currentTimeInMinutes - departureTimeInMinutes + 1440;
-                waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes + 1400;
+                waitTimeInMinutes = departureTimeInMinutes - currentTimeInMinutes + 1440;
 
             } else {
                 // nije pros'o

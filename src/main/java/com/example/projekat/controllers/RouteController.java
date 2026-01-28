@@ -1,5 +1,6 @@
 package com.example.projekat.controllers;
 
+import com.example.projekat.algorithms.RouteComparator;
 import com.example.projekat.models.Bill;
 import com.example.projekat.models.Route;
 import com.example.projekat.utils.BillUtil;
@@ -138,13 +139,7 @@ public class RouteController {
         return totalPrice;
     }
     private int calculateTotalMinutes(List<Route> routes){
-        if (routes == null) return 0;
-        int totalMinutes = 0;
-        for (Route r : routes){
-            totalMinutes+=r.getDurationMinutes();
-            totalMinutes+=r.getMinTransferTime();
-        }
-        return totalMinutes;
+        return RouteComparator.calculateTotalTripDuration(routes);
     }
     private String formatMinutes(int totalMinutes){
         int hours = totalMinutes / 60;
