@@ -178,6 +178,9 @@ public static final String FILENAME = "transport5.json";
 
             List<Node> path = Dijkstra.dijkstra(graph, source, target, selectedCriteria);
 
+
+            highlightPath(path);
+
             System.out.println("Putanja:");
             for (Node n : path) {
                 System.out.println(n.getId());
@@ -386,8 +389,14 @@ public static final String FILENAME = "transport5.json";
        // graphContainer.getChildren().add(viewPanel);
 
         double nodeSize = (Math.max(CountryController.getM(), CountryController.getN()) > 60)?2:4;
-        String style = "node { size: " + nodeSize + "px; fill-color: black; }" + "edge { size: 1px; fill-color: gray; }"
-                + "graph { padding: 50px; }";
+//        String style = "node { size: " + nodeSize + "px; fill-color: black; }" + "edge { size: 1px; fill-color: gray; }"
+//                + "graph { padding: 50px; }";
+
+        String style =
+                "node { size: " + nodeSize + "px; fill-color: black; }" +
+                        "edge { size: 1px; fill-color: gray; }" +
+                        "edge.path { fill-color: red; size: 3px; }" +
+                        "graph { padding: 50px; }";
 
         graph.setAttribute("ui.stylesheet", style);
 
@@ -541,4 +550,43 @@ public static final String FILENAME = "transport5.json";
         }
         return prefix + "_" + coords;
     }
+
+    private void clearEdgeHighlights(){
+        if (graph == null) return;
+        for(Edge e : graph.edges().toList()){
+            e.removeAttribute("ui.class");
+        }
+    }
+
+    public void highlightPath(List<Node> path){
+        if (graph == null || path==null || path.size()<2) return;
+
+        clearEdgeHighlights();
+
+        for (int i=0; i<path.size()-1; i++){
+            Node nodeA = path.get(i);
+            Node nodeB = path.get(i+1);
+
+            String edgeId = nodeA.getId() + "->" + nodeB.getId();
+            Edge e = graph.getEdge(edgeId);
+
+            if (e==null){
+                for (Edge out : nodeA.edges().toList()){
+                    if (out.getTargetNode().getId().equals(nodeB.getId())){
+                        e=out;
+                        break;
+                    }
+                }
+            }
+            if (e!=null){
+                e.setAttribute("ui.class", "path");
+            }
+            else {
+                System.out.println("Ne moze se pronaći ivica između " + nodeA.getId() + " i " + nodeB.getId() + ".");
+            }
+        }
+
+
+    }
+
     }
