@@ -4,6 +4,10 @@ import org.graphstream.graph.Node;
 
 import java.util.List;
 
+/**
+ * Podaci o jednoj ruti polaska izmedju dva grada tj. dvije stanice.
+ * Lista ovih ruta cini jednu putanju izmedju bilo koja dva grada.
+ */
 public class Route {
     private String source, destination, type;
     private int price;
@@ -16,6 +20,16 @@ public class Route {
         super();
     }
 
+    /**
+     * Konstruktor za generisanje rute izmedju dva grada.
+     * @param source naziv stanice, iz koje se polazi
+     * @param destination naziv grada, u koji se ide
+     * @param type tip prevoza : autobus ili voz
+     * @param price cijena voznje
+     * @param departureTime vrijeme polaska
+     * @param durationMinutes trajanje voznje u minutama
+     * @param minTransferTime minimalno vrijeme za transfer
+     */
     public Route(String source, String destination, String type, int price, List<String> path, String departureTime, int durationMinutes, int minTransferTime) {
         this.source = source;
         this.destination = destination;
@@ -91,6 +105,9 @@ public class Route {
         this.departureTime = departureTime;
     }
 
+    /**
+     * toString metoda, koja vraca @return String reprezentaciju objekta tipa Route
+     */
     @Override
     public String toString(){
         return "Route { " + "source = " + source +

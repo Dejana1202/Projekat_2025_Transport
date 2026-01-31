@@ -6,14 +6,25 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Klasa za serijalizaciju. Od podataka o kupovini jedne karte formiramo racun za prodaju.
+ * Podatke o racunu serijalizujemo, a kasnije podatke kao sto su cijene svih racuna deserijalizujemo.
+ * Takve podatke koristimo, da bismo imali uvid u podatke o ukupnoj zaradi i broju prodati karata.
+ */
 public class SerializationUtil {
 
     private static int billId=0;
+    /**
+     * @param billCounter brojac koliko ima racuna
+     */
     private static int billCounter=0;
+    /**
+     * pattern za pronalazak fajlova u formatu billN.ser
+     */
     private static final Pattern BILL_NAME_PATTERN = Pattern.compile("bill(\\d+)\\.ser", Pattern.CASE_INSENSITIVE);
     private SerializationUtil(){super();}
     /**
-     * Serialization method
+     * Cuvanje podataka o racunu
      * */
     public static synchronized boolean saveBill(Bill bill, String path){
         if (bill==null) return false;
@@ -54,7 +65,7 @@ public class SerializationUtil {
         }
     }
     /**
-     * init if billId = 0
+     * Inicijalizacija ako je billId = 0
      * */
     private static void initCountersFromFolder(File dir){
         File[] files = dir.listFiles(
@@ -83,7 +94,7 @@ public class SerializationUtil {
         billCounter = count;
     }
     /**
-     * Deserialization
+     * Deserijalizacija svih racuna. Citanje podataka o cijenama svih racuna i suma svih.
      * */
     public static synchronized int sumPricesFromBills(String path){
         File dir = new File(path);
@@ -109,9 +120,7 @@ public class SerializationUtil {
                 objectInputStream = new ObjectInputStream(fileInputStream);
 
                 Bill bill = (Bill) objectInputStream.readObject();
-                //Object obj = objectInputStream.readObject();
 
-                //Integer price = extractPriceFromBillObject(obj);
                 total+=bill.getPrice();
                 counted++;
             }

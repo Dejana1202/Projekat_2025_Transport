@@ -1,11 +1,29 @@
 package com.example.projekat.models;
 
+/**
+ * Station klasa je reprezentacija jednog grada, koji ima dvije stanice : autobusku i zeljeznicke.
+ */
 public class Station
 {
+    /**
+     * Naziv grada
+     */
     private String city;
+    /**
+     * Naziv autobuske stanice
+     */
     private String busStation;
+    /**
+     * Naziv zeljeznicke stanice
+     */
     private String trainStation;
 
+    /**
+     * Konstruktor, uz pomocu kog generisemo jedan grad
+     * @param city naziv grada
+     * @param busStation naziv autobuske stanice
+     * @param trainStation naziv zeljeznicke stanice
+     */
     public Station(String city, String busStation, String trainStation)
     {
         super();

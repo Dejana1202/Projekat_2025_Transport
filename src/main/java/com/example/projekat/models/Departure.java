@@ -1,12 +1,37 @@
 package com.example.projekat.models;
 
+/**
+ * Klasa Departure je jedan autobuski ili vozni polazak iz jednog grada u drugi, sa odredjenim vremeno polaska, trajanja i minimalnim vremenom transfera.
+ * Svaki polazak ima svoju cijenu.
+ */
 public class Departure {
+    /**
+     * Tip polaska moze biti autobus ili voz
+     */
     private String type;
+    /**
+     * Stanica iz koje se polazi
+     */
     private String from;
+    /**
+     * Odredisni grad
+     */
     private String to;
+    /**
+     * Vrijeme polaska
+     */
     private String departureTime;
+    /**
+     * Trajanje putovanja u minutama
+     */
     private int duration;
+    /**
+     * Cijena putovanja
+     */
     private int price;
+    /**
+     * Najmanje potrebno vrijeme za transfer
+     */
     private int minTransferTime;
 
     public String getType() {
@@ -68,6 +93,9 @@ public class Departure {
     public Departure() {
     }
 
+    /**
+     * Konstruktor za formiranje polaska
+     */
     public Departure(String type, String from, String to, String departureTime, int duration, int price, int minTransferTime) {
         super();
         this.type = type;

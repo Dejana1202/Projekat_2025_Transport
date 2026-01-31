@@ -29,12 +29,14 @@ import java.util.List;
 import java.util.*;
 
 public class CountryController {
-//    public static final String FILENAME = "transport_data.json";
+    public static final String FILENAME = "transport_data.json";
    // public static final String FILENAME = "transport2.json";
-public static final String FILENAME = "transport5.json";
+//public static final String FILENAME = "transport5.json";
     private static int m, n;
-    private double graphWidth = 1200;
-    private double graphHeight = 800;
+//    private double graphWidth = 1200;
+//    private double graphHeight = 800;
+    private double graphWidth = 1800;
+    private double graphHeight = 1400;
     public static RouteController routeController;
 
     @FXML
