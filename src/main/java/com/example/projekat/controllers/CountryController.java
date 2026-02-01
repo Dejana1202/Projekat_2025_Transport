@@ -28,6 +28,11 @@ import java.util.List;
 
 import java.util.*;
 
+/**
+ * Mapa gradova.
+ * Korisnik bira grad iz kog polazi, grad u koji ide i kriterijum pretrage @see {@link Criteria}.
+ * Na osnovu toga, moze vrsiti pretragu za optimalnu kartu i top 5 karata.
+ */
 public class CountryController {
     public static final String FILENAME = "transport_data.json";
    // public static final String FILENAME = "transport2.json";
@@ -73,6 +78,12 @@ public class CountryController {
     private String selectedTo = null;
     private Criteria selectedCriteria = null;
     private List<Route> lastRoutes = new ArrayList<>();
+
+    /**
+     * Postavljanje pocetnog izgleda stranice.
+     * Prikazuju se ukupan broj prodatih karata, ukupna zarada i combobox za odabir kriterijuma.
+     * Ucitava se graf tj. mapa gradova.
+     */
     @FXML
     public void initialize(){
         progressIndicator.setVisible(false);
@@ -83,20 +94,31 @@ public class CountryController {
         totalTicketsLabel.setText(String.valueOf(totalTickets));
         loadGraph(FILENAME);
     }
+
+    /**
+     * Ucitavanje izabranog polazista
+     */
     @FXML
     private void onFromSelected(){
         selectedFrom = fromCombo.getValue();
         System.out.println("Polaziste : " + selectedFrom);
     }
+
+    /**
+     * Dugme za pretragu top5 ruta. Poziva Yen algoritam.
+     */
     @FXML
     private void onTopKRoutesPressed(){
         if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
-            System.out.println("Pretrazujemo Dijkstra...");
+            System.out.println("Pretrazujemo Yenom...");
             Node source = graph.getNode(selectedFrom);
             Node target = graph.getNode(selectedTo);
 
             List<List<Route>> path = Yen.yen(graph, source, target, selectedCriteria);
 
+            /**
+             * Prikaz stranice sa tabelom za top5 ruta.
+             */
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projekat/more-routes.fxml"));
                 Parent root = loader.load();
@@ -111,26 +133,24 @@ public class CountryController {
                 e.printStackTrace();
             }
 
-
-//            System.out.println("Putanja:");
-//            for (Node n : path) {
-//                System.out.println(n.getId());
-//            }
-//            List<Route> routes = buildRoutesFromPath(graph, path, selectedCriteria);
-//            printRoutes(routes);
-//            this.lastRoutes = routes;
-//            showRouteTableButton.setVisible(true);
         }
         else {
             System.out.println("Molim vas, odaberite polaziste, odrediste i kriterijum.");
         }
     }
+    /**
+     * Ucitavanje izabranog odredista
+     */
     @FXML
     private void onToSelected(){
         selectedTo = toCombo.getValue();
         System.out.println("Odrediste : " + selectedTo);
 
     }
+
+    /**
+     * Ucitavanje izabranog kriterijuma za pretragu. @see {@link Criteria}
+     */
     @FXML
     private void onCriteriaSelected(){
     int index = criteriaCombo.getSelectionModel().getSelectedIndex();
@@ -145,6 +165,10 @@ public class CountryController {
     }
         System.out.println("Izabrani kriterijum " + selectedCriteria.name());
     }
+
+    /**
+     * Dugme za otvaranje stranice, koja prikazuje tabelu podacima o optimalnoj ruti.
+     */
     @FXML
     void onBestRoutePressed(ActionEvent event) {
         if (lastRoutes == null || lastRoutes.isEmpty()) {
@@ -170,6 +194,11 @@ public class CountryController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Dugme za poziv pretrage optimalne rute. Poziva Dijkstra algoritam i vraca Listu cvorova, kroz koje prolazi optimalna ruta.
+     * Nakon toga, na grafu oboji tu rutu crvenom bojom.
+     */
     @FXML
     void onSearchPressed(ActionEvent event) {
         if (selectedFrom != null && selectedTo != null && selectedCriteria != null){
@@ -198,6 +227,10 @@ public class CountryController {
         }
     }
 
+    /**
+     * ucitavanje grafa iz JSON fajla
+     * @param fileName JSON fajl sa podacima o mapi gradova - stanicama i polascima.
+     */
     private void loadGraph(String fileName){
         Task<Void> task = new Task<>() {
             @Override
@@ -258,6 +291,13 @@ public class CountryController {
         fromCombo.getItems().setAll(cities);
         toCombo.getItems().setAll(cities);
     }
+
+    /**
+     * Kreiranje i iscrtavanje podataka u obliku grafa.
+     * @param data podaci procitani iz JSON fajla @see {@link TransportData}
+     * Svaki grad sa autobuskom i zeljeznickom stanicom je cvor (Node).
+     * Polasci izmedju gradova su ivice (Edge).
+     */
     private void buildGraph(TransportData data){
         graph = new MultiGraph("country");
 
@@ -275,6 +315,9 @@ public class CountryController {
 
         Map<String, String> stationCodeToCity = new HashMap<>();
 
+        /**
+         * Stanice predstavljaju cvorove grafa.
+         */
         for (Station s : data.getStations()){
             String city = s.getCity();
             Node node = graph.addNode(city);
@@ -303,6 +346,10 @@ public class CountryController {
             if (s.getTrainStation() != null) stationCodeToCity.put(s.getTrainStation(), city);
         }
 
+        /**
+         * Polasci izmedju gradova su ivice grafa.
+         * Na ivicama postavljam atribute, koji su korisni prilikom koristenja algoritma za pretragu.
+         */
        // int edgeCounter = 0;
         for (Departure d: data.getDepartures()){
             String fromCode = d.getFrom();
@@ -438,6 +485,9 @@ public class CountryController {
     public static void setN(int n) {
         CountryController.n = n;
     }
+    /**
+     * Pretvaranje liste cvorova u listu objekata tipa Route, radi lakseg koristenja od strane Yen algoritma.
+     */
     public static List<Route> buildRoutesFromPath(Graph graph, List<Node> path, Criteria criteria){
         List<Route> routes = new ArrayList<>();
         if (path == null || path.size() < 2) return routes;
@@ -492,6 +542,12 @@ public class CountryController {
     }
 
 
+    /**
+     *
+     * @param e ivica, na kojoj trazimo najbolji polazak (Departure).
+     * @param criteria zadati kriterijum, na osnovu kojeg trazimo najbolji polazak.
+     * @return najbolji polazak.
+     */
     public static Departure chooseDepartureForEdge(Edge e, Criteria criteria)
     {
         Object obj = e.getAttribute("departures");
@@ -511,6 +567,9 @@ public class CountryController {
                 }
             }
 
+            /**
+             * Default odabir najjeftinije rute.
+             */
             // CHEAPEST and LEAST_TRANSFERS should take the cheapest route because transfers num is always 1 for departure, take cheapest anyway
             default -> {
                 // fallback na najjeftiniju
@@ -526,6 +585,9 @@ public class CountryController {
         return best;
     }
 
+    /**
+     * Pomocna metoda za ispis svih ruta na standarni izlaz.
+     */
     private void printRoutes(List<Route> routes) {
         System.out.println("Putanja (čvorovi):");
         for (Route r : routes) {
@@ -560,6 +622,10 @@ public class CountryController {
         }
     }
 
+    /**
+     * Bojenje ivica optimalne rute crvenom bojom.
+     * @param path Lista gradova, kroz koje prolazi najbolja ruta.
+     */
     public void highlightPath(List<Node> path){
         if (graph == null || path==null || path.size()<2) return;
 

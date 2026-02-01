@@ -24,6 +24,12 @@ public class MainController {
     @FXML
     private Button showMapBtn;
 
+    /**
+     * FXML metoda, povezana sa GUI dijelom aplikacije. Formira se matrica gradova, dimenzija nxm.
+     * @see TransportDataGenerator kreira gradove i polaske izmedju njih u obliku matrice dimenzija nxm.
+     * Generisane podatke smjesta u JSON fajl.
+     * Sve ispisuje na GUI.
+     */
     @FXML
     public void generate(){
         try {
@@ -45,6 +51,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Promjena scene. Prikaz mape gradova.
+     */
     @FXML
     public void showMap(){
         try {

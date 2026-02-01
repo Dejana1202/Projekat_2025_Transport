@@ -4,11 +4,23 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Reprezentacija racuna, koji se kreira prilikom kupovine karte za prevoz.
+ */
 public class Bill implements Serializable {
     private static Integer billId;
     private Integer id;
+    /**
+     * String reprezentacija svih stanica, kroz koje prolazi data putanja prevoza.
+     */
     private List<String> relations;
+    /**
+     * Vrijeme kupovine karte tj. vrijeme kreiranja samog racuna.
+     */
     private LocalDateTime purchaseTime;
+    /**
+     * Cijena racuna tj. suma svih cijena, svakog pojedinacnog polaska na datim relacijama.
+     */
     private int price;
     public Bill(){
         super();
@@ -60,6 +72,9 @@ public class Bill implements Serializable {
         this.price = price;
     }
 
+    /**
+     * @return String reprezentacija racuna, nastalog pri kupovini karte za prevoz.
+     */
     @Override
     public String toString() {
         return "Bill{" +
