@@ -36,12 +36,20 @@ public class Yen {
 
         PriorityQueue<List<Route>> queue = new PriorityQueue<>(new RouteComparator(criteria));
 
-        // Find k best routes. K starts at 1 since the first route is provided by dijkstra
+        /**
+         * Pronalazak k najboljih ruta, zapocinje kod prve i trazi se do najbolje prema Dijkstri,
+         */
         for(int k = 1; k < bestRoutesNum; k++) {
-            // Get spur nodes, one by one, for every "last best route" - initially the one returned by dijkstra
+            /**
+             * Uzimanje alternativnih ruta, jednu po jednu za svaku zadnju najbolju rutu.
+             * Dijkstra vraca jednu
+             */
             for(int i = 0; i < aList.get(k-1).size() - 1; i++){
 
                 // Add missing edges
+                /**
+                 * Dodavanje cvorova, koji nedostaju
+                 */
                 for(Edge e: graph.edges().toList()){
                     if(e.getAttribute("disabled") != null) {
                         e.removeAttribute("disabled");
@@ -67,7 +75,9 @@ public class Yen {
                 for(List<Route> p: aList){
                     if(i > p.size()) continue;
                     List<Route> subPath = p.subList(0, i);
-                    // Remove edges from original path
+                    /**
+                     * Uklanjanje ivica iz originalne putanje
+                     */
                     if(rootPath.equals(subPath)) {
                         int finalI = i;
                         List<Edge> edgesFromSource =  graph.getNode(p.get(i).getSource()).edges().toList();
@@ -80,21 +90,30 @@ public class Yen {
                 }
 
                 for(Route routeNode: rootPath){
-                    // remove nodes from graph and remember them
+                    /**
+                     * Uklanjanje cvorova iz grafa
+                     */
                     if(routeNode.equals(spurRoute) == false){
                         graph.getNode(routeNode.getSource()).setAttribute("disabled", true);
                     }
                 }
 
-                // Now get the new best route using Dijkstra
+                /**
+                 * Potraznja nove najbolje rute pomocu Dijkstra algoritma
+                 */
                 List<Route> spurPath = CountryController.buildRoutesFromPath(graph, Dijkstra.dijkstra(graph, getNodeFromString(graph, spurRoute.getSource()), target, criteria), criteria);
 
-                // Construct totalPath
+                /**
+                 * Formiranje total path - liste svih ruta
+                 */
                 List<Route> totalPath = new ArrayList<>();
                 totalPath.addAll(rootPath);
                 totalPath.addAll(spurPath);
 
-                // Ensure that dead-end is not added to queue, so ensure that the whole route goes from target to source
+
+                /**
+                 * Provjeravamo da li cijela ruta yaista ide od source-a do targeta
+                 */
                 if(totalPath.size() > 0
                         && queue.contains(totalPath) == false
                         && totalPath.get(0).getSource().equals(source.getId())
@@ -104,19 +123,23 @@ public class Yen {
 
             }
             if(queue.isEmpty()){
-                // Dead end
+
                 break;
             }
             aList.add(queue.poll());
         }
 
-        // Reset nodes
+        /**
+         * Resetovanje cvorova
+         */
         for(Node n: graph.nodes().toList()){
             if(n.getAttribute("disabled") != null) {
                 n.removeAttribute("disabled");
             }
         }
-        // Reset edges back to normal
+        /**
+         * Resetovanje ivica na pocetku vrijednost
+         */
         for(Edge e: graph.edges().toList()){
             if(e.getAttribute("disabled") != null) {
                 e.removeAttribute("disabled");
