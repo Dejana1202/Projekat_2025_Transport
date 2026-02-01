@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.example.projekat"},{"l":"com.example.projekat.algorithms"},{"l":"com.example.projekat.controllers"},{"l":"com.example.projekat.generator"},{"l":"com.example.projekat.models"},{"l":"com.example.projekat.utils"}];updateSearchResults();
