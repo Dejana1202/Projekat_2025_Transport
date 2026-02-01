@@ -39,11 +39,17 @@ public class MainController {
 
             CountryController.setM(m);
             CountryController.setN(n);
-            new TransportDataGenerator(m, n);
+            if (m>1 && m<100 && n>1 && n<100){
+
+                new TransportDataGenerator(m, n);
                 CountryController.setM(2);
                 CountryController.setN(2);
-            messageLabel.setText("JSON fajl je generisan!");
-            showMapBtn.setVisible(true);
+                messageLabel.setText("JSON fajl je generisan!");
+                showMapBtn.setVisible(true);
+            }
+            else {
+                messageLabel.setText("Dimenzije m i n moraju biti izmedju 1 i 100.");
+            }
         }
         catch (NumberFormatException e)
         {
