@@ -1,0 +1,1 @@
+Bill{relations=[Z_0_3 : G_1_3], purchaseTime=2026-01-25T17:59:43.587377200, price=503}
