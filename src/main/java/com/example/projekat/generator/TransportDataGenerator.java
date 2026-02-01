@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Klasa za generisanje matrice grada dimenzija nxm i postavljanje u JSON fajl.
+ */
 public class TransportDataGenerator {
 
     int n;

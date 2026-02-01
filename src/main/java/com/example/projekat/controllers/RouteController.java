@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Kontroler za prikaz najbolje Dijkstrine rute.
+ */
 public class RouteController {
     @FXML
     private TableView<Route> tableView;

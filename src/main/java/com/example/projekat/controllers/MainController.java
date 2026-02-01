@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Kontroler pocetne strane aplikacije.
+ */
 public class MainController {
     public static CountryController countryController;
 

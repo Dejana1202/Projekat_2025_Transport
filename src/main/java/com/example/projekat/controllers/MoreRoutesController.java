@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Kontroler za upravljanje stranicom za prikaz top5 ruta.
+ */
 public class MoreRoutesController {
 
     @FXML
