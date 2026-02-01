@@ -10,13 +10,29 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Klasa za izbor bolje rute od dvije ponudjene na osnovu zadatog kriterijuma @see {@link Criteria}. <br>
+ * Ovu klasu koristi @see {@link Yen} algoritam prilikom sortiranja ruta.
+ */
 public class RouteComparator implements Comparator<List<Route>> {
     private Criteria criteria;
 
+    /**
+     *
+     * @param criteria kriterijum na osnovu kojeg poredimo rute i vracamo bolju.
+     */
     public  RouteComparator(Criteria criteria){
         this.criteria = criteria;
     }
 
+    /**
+     * Override-ovana metoda compare, koja poredi dvije liste ruta. Provjerava se kriterijum i na osnovu toga se vrsi poredjenje.
+     * @param routeList1 prva putanja
+     * @param routeList2 druga putanja za poredjenje
+     * @return int vrijednost u zavisnosti koja od putanja je bolja (ili ako su jednake)
+     * <br>
+     * -1 : prva je bolja, 1 : druga je bolja, 0: jednake su.
+     */
     @Override
     public int compare(List<Route> routeList1, List<Route> routeList2) {
         switch (criteria) {
@@ -69,6 +85,11 @@ public class RouteComparator implements Comparator<List<Route>> {
         }
     }
 
+    /**
+     * Metoda koja racuna ukupno vrijeme putovanja, ukljucujuci cekanje do prvog prevoza na stanici.
+     * @param routeList putanja cije trajanje racunamo
+     * @return vrijeme u minutama.
+     */
     public static int calculateTotalTripDuration(List<Route> routeList){
         int totalTripDuration = 0;
         int waitTimeInMinutes = 0;

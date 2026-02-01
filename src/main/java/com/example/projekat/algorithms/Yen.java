@@ -8,7 +8,23 @@ import org.graphstream.graph.Node;
 
 import java.util.*;
 
+/**
+ * Implementacija Yen algoritma za pronalazenje K najboljih ruta izmedju source i target cvorova, u ovom slucaju K=5.
+ * Koristi prethodno implementiran Dijkstrin algoritam da dobije optimalan put, u zavisnosti od kriterijuma.
+ * Nako toga generise alternativne (spur) rute tako sto iskljucuje grane i cvorove prethodno pronadjenih puteva.
+ * @return Lista 5 najboljih puteva, gdje je svaki put predstavljen u obliku liste ruta izmedju ishodisnog i odredisnog cvora.
+ */
 public class Yen {
+    /**
+     * Prvu rutu dobijamo pozivom Dijkstra algoritma.
+     * Koristimo PriorityQueue za prikupljanje liste ruta radi sortiranja potencijalnih alternativnih ruta.
+     * 
+     * @param graph mapa gradova u obliku grafa
+     * @param source izvoriste
+     * @param target odrediste
+     * @param criteria kriterijum pretrage @see {@link Criteria}
+     * @return lista 5 najboljih puteva
+     */
     public static List<List<Route>> yen(Graph graph, Node source, Node target, Criteria criteria){
         final int bestRoutesNum = 5;
 
